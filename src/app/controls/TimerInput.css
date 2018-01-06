@@ -1,0 +1,44 @@
+.timer-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 0 0.5em;
+}
+
+.timer-input div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 2em;
+  width: 6em;
+  height: 1.5em;
+
+  cursor: pointer;
+}
+.timer-input input {
+  font-size: 1em;
+  max-width: 2em;
+  padding: 2px 0;
+
+  text-align: center;
+}
+
+button.btn {
+  background-color: white;
+  border: 1px solid lightgray;
+  cursor: pointer;
+  transition-duration: 0.3s;
+
+  font-size: 1em;
+  height: 100%;
+  width: 1.5em;
+}
+button.btn:hover {
+  background-color: #e7e7e7;
+}
+button.btn:focus,
+button.btn:active {
+  outline: 0;
+}
