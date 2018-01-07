@@ -8,12 +8,12 @@ describe('START', () => {
 
     const result = subject('blah', action);
 
-    expect(result).toBe(action.timestamp);
+    expect(result).toBe(100);
   });
 });
 
 describe('STOP', () => {
-  const action = actions.stop(0.5);
+  const action = actions.stop(0, 20, 0.5);
 
   it('startTime', () => {
     const subject = SUT.startTime;
@@ -21,6 +21,14 @@ describe('STOP', () => {
     const result = subject('blah', action);
 
     expect(result).toBeNull();
+  });
+
+  it('duration', () => {
+    const subject = SUT.duration;
+
+    const result = subject(55, action);
+
+    expect(result).toBe(35);
   });
 
   it('progress', () => {

@@ -1,8 +1,9 @@
 export const START = 'START';
-export const start = timestamp => ({ type: START, timestamp: Date.now() });
+export const start = currentTime => ({ type: START, timestamp: currentTime });
 
 export const STOP = 'STOP';
-export const stop = progress => ({
+export const stop = (startTime, currentTime, progress) => ({
   type: STOP,
-  progress
+  progress,
+  elapsed: currentTime - startTime
 });

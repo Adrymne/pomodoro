@@ -16,7 +16,8 @@ export const startTime = (state = null, action) => {
   }
 };
 
-const duration = (state = 60, action) => state;
+export const duration = (state = 60 * 1000, action) =>
+  action.type === STOP ? state - action.elapsed : state;
 
 export const progress = (state = 0, action) =>
   action.type === STOP ? action.progress : state;
