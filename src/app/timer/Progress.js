@@ -2,21 +2,22 @@ import React from 'react';
 import { Circle } from 'progressbar.js';
 import './Progress.css';
 
-const toMs = minutes => minutes * 60 * 1000;
-
 class Progress extends React.Component {
   componentDidMount() {
-    this.create();
+    this.create(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.create(nextProps);
   }
 
   componentWillUnmount() {
     this.destroy();
   }
 
-  create() {
+  create({ color, duration, progress }) {
     this.destroy();
 
-    const { color, duration, progress } = this.props;
     this.shape = new Circle(this.container, {
       strokeWidth: 3,
       color,
@@ -24,7 +25,7 @@ class Progress extends React.Component {
     });
     this.shape.set(progress);
     if (duration) {
-      this.shape.animate(1, { duration: toMs(duration) });
+      this.shape.animate(1, { duration });
     }
   }
 
@@ -35,8 +36,10 @@ class Progress extends React.Component {
     }
   }
 
+  getProgress = () => this.shape && this.shape.value();
+
   render() {
-    const { timerSize } = this.props;
+    const { timerSize, onClick } = this.props;
     return (
       <div
         id="timer-progress"
@@ -48,6 +51,7 @@ class Progress extends React.Component {
           height: `${timerSize}px`,
           cursor: 'pointer'
         }}
+        onClick={() => onClick(this.getProgress())}
       />
     );
   }
