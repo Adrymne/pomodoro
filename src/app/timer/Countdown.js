@@ -10,7 +10,7 @@ const padStart = (length, padding, str) =>
   padding.repeat(Math.max(0, length - str.length)) + str;
 const formatTime = time => padStart(2, '0', time.toString());
 
-const toSeconds = ms => Math.floor(ms / 1000);
+const toSeconds = ms => ms / 1000;
 const elapsed = startTime => Date.now() - startTime;
 
 class Countdown extends React.Component {
@@ -32,8 +32,8 @@ class Countdown extends React.Component {
 
   startClock = ({ startTime, duration }) => {
     this.clock = setInterval(() => {
-      this.setState({ remaining: duration - elapsed(startTime) });
-    }, 500);
+      this.setState({ remaining: Math.max(duration - elapsed(startTime), 0) });
+    }, 100);
   };
   stopClock = () => {
     clearInterval(this.clock);
@@ -47,7 +47,7 @@ class Countdown extends React.Component {
       <div className="time-display" style={calcPosition(timerSize)}>
         {formatTime(Math.floor(toSeconds(remaining) / 60))}
         :
-        {formatTime(Math.floor(toSeconds(remaining) % 60))}
+        {formatTime(Math.ceil(toSeconds(remaining) % 60))}
       </div>
     );
   }
