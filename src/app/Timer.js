@@ -11,8 +11,10 @@ const phaseColour = isWork => (isWork ? 'red' : 'green');
 
 const isRunning = timer => !!timer.startTime;
 
-const timerToggle = (start, stop, timer) =>
-  isRunning(timer) ? stop.bind(null, timer.startTime) : start;
+const timerToggle = (start, stop, timer) => progress =>
+  isRunning(timer)
+    ? stop(timer.startTime, Date.now(), progress)
+    : start(Date.now());
 
 const Timer = ({ isWork, timer, start, stop }) => (
   <div id="timer">

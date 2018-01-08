@@ -51,7 +51,7 @@ class Progress extends React.Component {
           height: `${timerSize}px`,
           cursor: 'pointer'
         }}
-        onClick={() => onClick(Date.now(), this.getProgress())}
+        onClick={() => onClick(this.getProgress())}
       />
     );
   }
