@@ -39,3 +39,25 @@ describe('STOP', () => {
     expect(result).toBe(0.5);
   });
 });
+
+describe('UPDATE_PHASE_LENGTH', () => {
+  it('update work phase', () => {
+    const subject = SUT.phases;
+    const state = { work: 25, rest: 2 };
+    const action = actions.updatePhaseLength({ work: 5 });
+
+    const result = subject(state, action);
+
+    expect(result).toEqual({ work: 5, rest: 2 });
+  });
+
+  it('update rest phase', () => {
+    const subject = SUT.phases;
+    const state = { work: 50, rest: 10 };
+    const action = actions.updatePhaseLength({ rest: 15 });
+
+    const result = subject(state, action);
+
+    expect(result).toEqual({ work: 50, rest: 15 });
+  });
+});

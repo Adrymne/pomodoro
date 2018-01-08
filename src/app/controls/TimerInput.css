@@ -17,13 +17,6 @@
 
   cursor: pointer;
 }
-.timer-input input {
-  font-size: 1em;
-  max-width: 2em;
-  padding: 2px 0;
-
-  text-align: center;
-}
 
 button.btn {
   background-color: white;

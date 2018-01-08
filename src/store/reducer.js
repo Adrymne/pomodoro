@@ -1,7 +1,12 @@
 import { combineReducers } from 'redux';
-import { START, STOP } from 'store/actions';
+import { START, STOP, UPDATE_PHASE_LENGTH } from 'store/actions';
 
 // actions: START, STOP, RESET, SKIP
+
+const DEFAULT_LENGTH = {
+  work: 5 * 60 * 1000,
+  rest: 1 * 60 * 1000
+};
 
 const isWork = (state = true, action) => state;
 
@@ -16,7 +21,7 @@ export const startTime = (state = null, action) => {
   }
 };
 
-export const duration = (state = 60 * 1000, action) =>
+export const duration = (state = DEFAULT_LENGTH.work, action) =>
   action.type === STOP ? state - action.elapsed : state;
 
 export const progress = (state = 0, action) =>
@@ -24,7 +29,15 @@ export const progress = (state = 0, action) =>
 
 const timer = combineReducers({ isWork, startTime, duration, progress });
 
-export default combineReducers({ timer });
+export const phases = (state = DEFAULT_LENGTH, action) =>
+  action.type === UPDATE_PHASE_LENGTH
+    ? {
+        work: 'work' in action.phases ? action.phases.work : state.work,
+        rest: 'rest' in action.phases ? action.phases.rest : state.rest
+      }
+    : state;
+
+export default combineReducers({ timer, phases });
 
 export const isWorkPhase = state => state.timer.isWork;
 export const getTimerState = state => ({
@@ -32,3 +45,6 @@ export const getTimerState = state => ({
   duration: state.timer.duration,
   progress: state.timer.progress
 });
+
+export const getWorkLength = state => state.phases.work;
+export const getRestLength = state => state.phases.rest;

@@ -1,0 +1,17 @@
+.minute-input {
+  font-size: 1em;
+  max-width: 2em;
+  padding: 2px 0;
+
+  text-align: center;
+}
+
+/* disable arrows */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}

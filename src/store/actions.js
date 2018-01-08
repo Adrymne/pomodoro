@@ -7,3 +7,9 @@ export const stop = (startTime, currentTime, progress) => ({
   progress,
   elapsed: currentTime - startTime
 });
+
+export const UPDATE_PHASE_LENGTH = 'UPDATE_PHASE_LENGTH';
+export const updatePhaseLength = phases => ({
+  type: UPDATE_PHASE_LENGTH,
+  phases
+});
