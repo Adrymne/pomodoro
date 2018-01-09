@@ -87,6 +87,25 @@ describe('timer', () => {
       expect(result).toBe(state);
     });
   });
+
+  it('NEXT_PHASE', () => {
+    const state = {
+      inProgress: true,
+      startTime: 100,
+      duration: 50,
+      progress: 0.5
+    };
+    const action = actions.nextPhase(200);
+
+    const result = subject(state, action);
+
+    expect(result).toEqual({
+      inProgress: false,
+      startTime: null,
+      duration: 200,
+      progress: 0
+    });
+  });
 });
 
 describe('phases', () => {

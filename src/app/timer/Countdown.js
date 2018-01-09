@@ -30,13 +30,15 @@ class Countdown extends React.Component {
     }
   }
 
-  startClock = ({ startTime, duration }) => {
+  startClock = ({ startTime, duration, onFinish }) => {
     this.clock = setInterval(() => {
       this.setState({ elapsed: elapsed(startTime) });
-    }, 1);
+    }, 50);
+    this.timeout = setTimeout(onFinish, duration);
   };
   stopClock = () => {
     clearInterval(this.clock);
+    clearTimeout(this.timeout);
     this.setState({ elapsed: 0 });
   };
 
