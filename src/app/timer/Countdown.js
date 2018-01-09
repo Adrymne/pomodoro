@@ -18,14 +18,11 @@ class Countdown extends React.Component {
     super(props);
 
     this.state = {
-      remaining: props.duration
+      elapsed: 0
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.inProgress) {
-      this.setState({ remaining: nextProps.duration });
-    }
     if (!this.props.isRunning && nextProps.isRunning) {
       this.startClock(nextProps);
     } else if (!nextProps.isRunning) {
@@ -35,17 +32,19 @@ class Countdown extends React.Component {
 
   startClock = ({ startTime, duration }) => {
     this.clock = setInterval(() => {
-      this.setState({ remaining: Math.max(duration - elapsed(startTime), 0) });
+      this.setState({ elapsed: elapsed(startTime) });
     }, 1);
   };
   stopClock = () => {
     clearInterval(this.clock);
+    this.setState({ elapsed: 0 });
   };
 
   render() {
-    const { timerSize } = this.props;
-    const { remaining } = this.state;
+    const { timerSize, duration } = this.props;
+    const { elapsed } = this.state;
 
+    const remaining = Math.max(duration - elapsed, 0);
     return (
       <div className="time-display" style={calcPosition(timerSize)}>
         {formatTime(Math.floor(toSeconds(remaining) / 60))}
