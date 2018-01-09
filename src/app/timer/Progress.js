@@ -1,6 +1,9 @@
 import React from 'react';
 import { Circle } from 'progressbar.js';
 import './Progress.css';
+import { cond, anyPass } from 'utils';
+
+const changed = prop => (next, prev) => prev[prop] !== next[prop];
 
 class Progress extends React.Component {
   componentDidMount() {
@@ -8,35 +11,47 @@ class Progress extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.create(nextProps);
+    cond([
+      [changed('color'), this.create],
+      [
+        anyPass([
+          changed('duration'),
+          changed('progress'),
+          changed('isRunning')
+        ]),
+        this.update
+      ]
+    ])(nextProps, this.props);
   }
 
   componentWillUnmount() {
     this.destroy();
   }
 
-  // TODO: probably do not need to recreate the progressbar on every props update
-  create({ color, duration, progress, isRunning }) {
+  create = props => {
     this.destroy();
 
     this.shape = new Circle(this.container, {
       strokeWidth: 3,
-      color,
+      color: props.color,
       trailColor: '#eee'
     });
-    this.shape.set(progress);
-    if (isRunning) {
-      this.shape.animate(1, { duration });
+    this.update(props);
+  };
+  update = ({ duration, progress, isRunning }) => {
+    if (this.shape) {
+      this.shape.set(progress);
+      if (isRunning) {
+        this.shape.animate(1, { duration });
+      }
     }
-  }
-
-  destroy() {
+  };
+  destroy = () => {
     if (this.shape) {
       this.shape.destroy();
-      this.shape = undefined;
+      this.shape = null;
     }
-  }
-
+  };
   getProgress = () => this.shape && this.shape.value();
 
   render() {
@@ -57,9 +72,5 @@ class Progress extends React.Component {
     );
   }
 }
-Progress.defaultProps = {
-  color: 'red',
-  progress: 0
-};
 
 export default Progress;
