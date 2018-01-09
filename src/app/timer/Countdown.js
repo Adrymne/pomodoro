@@ -33,7 +33,7 @@ class Countdown extends React.Component {
   startClock = ({ startTime, duration }) => {
     this.clock = setInterval(() => {
       this.setState({ remaining: Math.max(duration - elapsed(startTime), 0) });
-    }, 100);
+    }, 1);
   };
   stopClock = () => {
     clearInterval(this.clock);
@@ -47,7 +47,7 @@ class Countdown extends React.Component {
       <div className="time-display" style={calcPosition(timerSize)}>
         {formatTime(Math.floor(toSeconds(remaining) / 60))}
         :
-        {formatTime(Math.ceil(toSeconds(remaining) % 60))}
+        {formatTime(Math.floor(toSeconds(remaining) % 60))}
       </div>
     );
   }
