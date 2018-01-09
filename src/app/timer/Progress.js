@@ -15,6 +15,7 @@ class Progress extends React.Component {
     this.destroy();
   }
 
+  // TODO: probably do not need to recreate the progressbar on every props update
   create({ color, duration, progress, isRunning }) {
     this.destroy();
 

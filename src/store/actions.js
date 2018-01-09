@@ -1,15 +1,16 @@
 export const START = 'START';
-export const start = currentTime => ({ type: START, timestamp: currentTime });
+export const start = currentTime => ({ type: START, currentTime });
 
 export const STOP = 'STOP';
-export const stop = (startTime, currentTime, progress) => ({
+export const stop = (currentTime, progress) => ({
   type: STOP,
   progress,
-  elapsed: currentTime - startTime
+  currentTime
 });
 
 export const UPDATE_PHASE_LENGTH = 'UPDATE_PHASE_LENGTH';
-export const updatePhaseLength = phases => ({
+export const updatePhaseLength = (phase, length) => ({
   type: UPDATE_PHASE_LENGTH,
-  phases
+  phase,
+  length
 });

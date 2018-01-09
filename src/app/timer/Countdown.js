@@ -23,9 +23,12 @@ class Countdown extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.startTime) {
+    if (!nextProps.inProgress) {
+      this.setState({ remaining: nextProps.duration });
+    }
+    if (!this.props.isRunning && nextProps.isRunning) {
       this.startClock(nextProps);
-    } else {
+    } else if (!nextProps.isRunning) {
       this.stopClock();
     }
   }

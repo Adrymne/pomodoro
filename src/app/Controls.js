@@ -5,27 +5,28 @@ import * as selectors from 'store/reducer';
 import TimerInput from './controls/TimerInput';
 import './Controls.css';
 
-const toMinutes = ms => Math.floor(ms / (60 * 1000));
-const fromMinutes = minutes => minutes * 60 * 1000;
-
-const Controls = ({ work, rest, updatePhaseLength }) => (
+const Controls = ({ work, rest, updateWork, updateRest }) => (
   <div id="controls">
-    <TimerInput
-      label="Break Length"
-      value={rest}
-      onChange={rest => updatePhaseLength({ rest: fromMinutes(rest) })}
-    />
-    <TimerInput
-      label="Work Length"
-      value={work}
-      onChange={work => updatePhaseLength({ work: fromMinutes(work) })}
-    />
+    <TimerInput label="Break Length" value={rest} onChange={updateRest} />
+    <TimerInput label="Work Length" value={work} onChange={updateWork} />
   </div>
 );
+
+const toMinutes = ms => Math.floor(ms / (60 * 1000));
+const fromMinutes = minutes => minutes * 60 * 1000;
 
 const mapStateToProps = state => ({
   work: toMinutes(selectors.getWorkLength(state)),
   rest: toMinutes(selectors.getRestLength(state))
 });
 
-export default connect(mapStateToProps, actions)(Controls);
+const updatePhase = (phase, { updatePhaseLength }) => minutes =>
+  updatePhaseLength(phase, fromMinutes(minutes));
+
+const mergeProps = (stateProps, dispatchProps) => ({
+  ...stateProps,
+  updateWork: updatePhase('work', dispatchProps),
+  updateRest: updatePhase('rest', dispatchProps)
+});
+
+export default connect(mapStateToProps, actions, mergeProps)(Controls);

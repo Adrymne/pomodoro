@@ -29,7 +29,7 @@ const mapStateToProps = state => ({
 });
 
 const toggleTimerState = ({ isRunning, timer }, { start, stop }) => progress =>
-  isRunning ? stop(timer.startTime, Date.now(), progress) : start(Date.now());
+  isRunning ? stop(Date.now(), progress) : start(Date.now());
 
 const mergeProps = (stateProps, dispatchProps) => ({
   ...stateProps,

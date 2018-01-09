@@ -4,44 +4,55 @@ import { START, STOP, UPDATE_PHASE_LENGTH } from 'store/actions';
 // actions: START, STOP, RESET, SKIP
 
 const DEFAULT_LENGTH = {
-  work: 5 * 60 * 1000,
-  rest: 1 * 60 * 1000
+  work: 25 * 60 * 1000,
+  rest: 5 * 60 * 1000
 };
 
-const isWork = (state = true, action) => state;
+const TIMER_DEFAULT = {
+  inProgress: false,
+  startTime: null,
+  duration: DEFAULT_LENGTH.work,
+  progress: 0
+};
 
-export const startTime = (state = null, action) => {
+export const timer = (state = TIMER_DEFAULT, action) => {
   switch (action.type) {
     case START:
-      return action.timestamp;
+      return {
+        ...state,
+        inProgress: true,
+        startTime: action.currentTime
+      };
     case STOP:
-      return null;
+      return {
+        ...state,
+        startTime: null,
+        duration: state.duration - (action.currentTime - state.startTime),
+        progress: action.progress
+      };
+    case UPDATE_PHASE_LENGTH:
+      return {
+        ...state,
+        duration: state.inProgress ? state.duration : action.length
+      };
     default:
       return state;
   }
 };
 
-export const duration = (state = DEFAULT_LENGTH.work, action) =>
-  action.type === STOP ? state - action.elapsed : state;
-
-export const progress = (state = 0, action) =>
-  action.type === STOP ? action.progress : state;
-
-const timer = combineReducers({ isWork, startTime, duration, progress });
-
 export const phases = (state = DEFAULT_LENGTH, action) =>
   action.type === UPDATE_PHASE_LENGTH
-    ? {
-        work: 'work' in action.phases ? action.phases.work : state.work,
-        rest: 'rest' in action.phases ? action.phases.rest : state.rest
-      }
+    ? { ...state, [action.phase]: action.length }
     : state;
 
 export default combineReducers({ timer, phases });
 
-export const isWorkPhase = state => state.timer.isWork;
+// TODO: implement
+export const isWorkPhase = state => true;
+
 export const isRunning = state => !!state.timer.startTime;
 export const getTimerState = state => ({
+  inProgress: state.timer.inProgress,
   startTime: state.timer.startTime,
   duration: state.timer.duration,
   progress: state.timer.progress
