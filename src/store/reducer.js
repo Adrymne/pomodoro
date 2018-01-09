@@ -40,6 +40,7 @@ export const phases = (state = DEFAULT_LENGTH, action) =>
 export default combineReducers({ timer, phases });
 
 export const isWorkPhase = state => state.timer.isWork;
+export const isRunning = state => !!state.timer.startTime;
 export const getTimerState = state => ({
   startTime: state.timer.startTime,
   duration: state.timer.duration,

@@ -15,7 +15,7 @@ class Progress extends React.Component {
     this.destroy();
   }
 
-  create({ color, duration, progress }) {
+  create({ color, duration, progress, isRunning }) {
     this.destroy();
 
     this.shape = new Circle(this.container, {
@@ -24,7 +24,7 @@ class Progress extends React.Component {
       trailColor: '#eee'
     });
     this.shape.set(progress);
-    if (duration) {
+    if (isRunning) {
       this.shape.animate(1, { duration });
     }
   }

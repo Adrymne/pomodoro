@@ -9,33 +9,31 @@ import './Timer.css';
 const calcSize = () => Math.min(window.innerWidth, window.innerHeight) * 0.7;
 const phaseColour = isWork => (isWork ? 'red' : 'green');
 
-const isRunning = timer => !!timer.startTime;
-
-const timerToggle = (start, stop, timer) => progress =>
-  isRunning(timer)
-    ? stop(timer.startTime, Date.now(), progress)
-    : start(Date.now());
-
-const Timer = ({ isWork, timer, start, stop }) => (
+const Timer = ({ isWork, isRunning, timer, onClick }) => (
   <div id="timer">
     <Progress
-      duration={isRunning(timer) ? timer.duration : undefined}
       color={phaseColour(isWork)}
-      progress={timer.progress}
       timerSize={calcSize()}
-      onClick={timerToggle(start, stop, timer)}
+      onClick={onClick}
+      isRunning={isRunning}
+      {...timer}
     />
-    <Countdown
-      startTime={timer.startTime}
-      duration={timer.duration}
-      timerSize={calcSize()}
-    />
+    <Countdown timerSize={calcSize()} isRunning={isRunning} {...timer} />
   </div>
 );
 
 const mapStateToProps = state => ({
   isWork: selectors.isWorkPhase(state),
+  isRunning: selectors.isRunning(state),
   timer: selectors.getTimerState(state)
 });
 
-export default connect(mapStateToProps, actions)(Timer);
+const toggleTimerState = ({ isRunning, timer }, { start, stop }) => progress =>
+  isRunning ? stop(timer.startTime, Date.now(), progress) : start(Date.now());
+
+const mergeProps = (stateProps, dispatchProps) => ({
+  ...stateProps,
+  onClick: toggleTimerState(stateProps, dispatchProps)
+});
+
+export default connect(mapStateToProps, actions, mergeProps)(Timer);
