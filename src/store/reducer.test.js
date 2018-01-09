@@ -84,7 +84,7 @@ describe('timer', () => {
 
       const result = subject(state, action);
 
-      expect(result).toEqual(state);
+      expect(result).toBe(state);
     });
   });
 });

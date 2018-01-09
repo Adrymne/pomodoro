@@ -31,10 +31,12 @@ export const timer = (state = TIMER_DEFAULT, action) => {
         progress: action.progress
       };
     case UPDATE_PHASE_LENGTH:
-      return {
-        ...state,
-        duration: state.inProgress ? state.duration : action.length
-      };
+      return !state.inProgress
+        ? {
+            ...state,
+            duration: action.length
+          }
+        : state;
     default:
       return state;
   }
@@ -51,12 +53,7 @@ export default combineReducers({ timer, phases });
 export const isWorkPhase = state => true;
 
 export const isRunning = state => !!state.timer.startTime;
-export const getTimerState = state => ({
-  inProgress: state.timer.inProgress,
-  startTime: state.timer.startTime,
-  duration: state.timer.duration,
-  progress: state.timer.progress
-});
+export const getTimerState = state => state.timer;
 
 export const getWorkLength = state => state.phases.work;
 export const getRestLength = state => state.phases.rest;
