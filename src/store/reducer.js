@@ -8,8 +8,7 @@ import {
 } from 'store/actions';
 
 const DEFAULT_LENGTH = {
-  work: 5000,
-  // work: 25 * 60 * 1000,
+  work: 25 * 60 * 1000,
   rest: 5 * 60 * 1000
 };
 
