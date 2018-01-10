@@ -30,21 +30,26 @@ const Timer = ({ isWork, isRunning, timer, onClick, onFinish }) => (
 const mapStateToProps = state => ({
   isWork: selectors.isWorkPhase(state),
   isRunning: selectors.isRunning(state),
-  timer: selectors.getTimerState(state),
-  nextPhaseLength: selectors.getNextPhaseLength(state)
+  timer: {
+    startTime: selectors.getStartTime(state),
+    progress: selectors.getProgress(state),
+    duration: selectors.getDuration(state)
+  },
+  activePhaseLength: selectors.getActivePhaseLength(state)
 });
 
-const toggleTimerState = ({ isRunning, timer }, { start, stop }) => progress =>
-  isRunning ? stop(Date.now(), progress) : start(Date.now());
-const startNextPhase = ({ nextPhaseLength }, { nextPhase }) => () =>
-  nextPhase(nextPhaseLength);
+const toggleTimerState = (
+  { isRunning, activePhaseLength },
+  { start, stop }
+) => progress =>
+  isRunning ? stop(Date.now(), progress) : start(activePhaseLength, Date.now());
 
 const mergeProps = (stateProps, dispatchProps) => ({
   isWork: stateProps.isWork,
   isRunning: stateProps.isRunning,
   timer: stateProps.timer,
   onClick: toggleTimerState(stateProps, dispatchProps),
-  onFinish: startNextPhase(stateProps, dispatchProps)
+  onFinish: dispatchProps.nextPhase
 });
 
 export default connect(mapStateToProps, actions, mergeProps)(Timer);

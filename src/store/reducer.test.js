@@ -8,35 +8,31 @@ describe('timer', () => {
     const result = subject(undefined, {});
 
     expect(result).toEqual({
-      inProgress: false,
       startTime: null,
-      duration: 25 * 60 * 1000, // 25 mintutes
+      duration: null,
       progress: 0
     });
   });
 
   it('START', () => {
     const state = {
-      inProgress: false,
       startTime: null,
-      duration: 25 * 60 * 1000, // 25 mintutes
+      duration: null,
       progress: 0
     };
-    const action = actions.start(100);
+    const action = actions.start(2000, 100);
 
     const result = subject(state, action);
 
     expect(result).toEqual({
-      inProgress: true,
       startTime: 100,
-      duration: state.duration,
+      duration: 2000,
       progress: state.progress
     });
   });
 
   it('STOP', () => {
     const state = {
-      inProgress: true,
       startTime: 100,
       duration: 1000, // 25 mintutes
       progress: 0
@@ -46,63 +42,25 @@ describe('timer', () => {
     const result = subject(state, action);
 
     expect(result).toEqual({
-      inProgress: state.inProgress,
       startTime: null,
       duration: 950,
       progress: 0.05
     });
   });
 
-  describe('UPDATE_PHASE_LENGTH', () => {
-    it('timer not started yet', () => {
-      const state = {
-        inProgress: false,
-        startTime: null,
-        duration: 1000,
-        progress: 0
-      };
-      const action = actions.updatePhaseLength('work', 2000);
-
-      const result = subject(state, action);
-
-      expect(result).toEqual({
-        inProgress: state.inProgress,
-        startTime: state.startTime,
-        duration: 2000,
-        progress: state.progress
-      });
-    });
-
-    it('timer has been started', () => {
-      const state = {
-        inProgress: true,
-        startTime: null,
-        duration: 950,
-        progress: 0.05
-      };
-      const action = actions.updatePhaseLength('work', 2000);
-
-      const result = subject(state, action);
-
-      expect(result).toBe(state);
-    });
-  });
-
   it('NEXT_PHASE', () => {
     const state = {
-      inProgress: true,
       startTime: 100,
       duration: 50,
       progress: 0.5
     };
-    const action = actions.nextPhase(200);
+    const action = actions.nextPhase();
 
     const result = subject(state, action);
 
     expect(result).toEqual({
-      inProgress: false,
       startTime: null,
-      duration: 200,
+      duration: null,
       progress: 0
     });
   });

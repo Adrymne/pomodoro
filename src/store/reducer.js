@@ -9,9 +9,8 @@ const DEFAULT_LENGTH = {
 };
 
 const TIMER_DEFAULT = {
-  inProgress: false,
   startTime: null,
-  duration: DEFAULT_LENGTH.work,
+  duration: null,
   progress: 0
 };
 
@@ -20,7 +19,7 @@ export const timer = (state = TIMER_DEFAULT, action) => {
     case START:
       return {
         ...state,
-        inProgress: true,
+        duration: action.duration,
         startTime: action.currentTime
       };
     case STOP:
@@ -30,18 +29,8 @@ export const timer = (state = TIMER_DEFAULT, action) => {
         duration: state.duration - (action.currentTime - state.startTime),
         progress: action.progress
       };
-    case UPDATE_PHASE_LENGTH:
-      return !state.inProgress
-        ? {
-            ...state,
-            duration: action.length
-          }
-        : state;
     case NEXT_PHASE:
-      return {
-        ...TIMER_DEFAULT,
-        duration: action.duration
-      };
+      return { ...TIMER_DEFAULT };
     default:
       return state;
   }
@@ -52,18 +41,24 @@ export const isWork = (state = true, action) =>
 
 export const phases = (state = DEFAULT_LENGTH, action) =>
   action.type === UPDATE_PHASE_LENGTH
-    ? { ...state, [action.phase]: action.length }
+    ? { ...state, [action.phase]: action.duration }
     : state;
 
 export default combineReducers({ timer, isWork, phases });
 
-export const isWorkPhase = state => state.isWork;
+// SELECTORS
 
-export const isRunning = state => !!state.timer.startTime;
-export const getTimerState = state => state.timer;
+export const isWorkPhase = state => state.isWork;
 
 export const getWorkLength = state => state.phases.work;
 export const getRestLength = state => state.phases.rest;
 
-export const getNextPhaseLength = state =>
-  state.isWork ? state.phases.rest : state.phases.work;
+export const getActivePhaseLength = state =>
+  isWorkPhase(state) ? getWorkLength(state) : getRestLength(state);
+
+export const isRunning = state => !!state.timer.startTime;
+export const getStartTime = state => state.timer.startTime;
+export const getProgress = state => state.timer.progress;
+const isInProgress = state => !!state.timer.duration;
+export const getDuration = state =>
+  isInProgress(state) ? state.timer.duration : getActivePhaseLength(state);
