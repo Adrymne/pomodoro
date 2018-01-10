@@ -1,5 +1,11 @@
 import { combineReducers } from 'redux';
-import { START, STOP, UPDATE_PHASE_LENGTH, NEXT_PHASE } from 'store/actions';
+import {
+  START,
+  STOP,
+  UPDATE_PHASE_LENGTH,
+  NEXT_PHASE,
+  RESET_PHASE
+} from 'store/actions';
 
 // actions: START, STOP, RESET, SKIP
 
@@ -30,6 +36,7 @@ export const timer = (state = TIMER_DEFAULT, action) => {
         progress: action.progress
       };
     case NEXT_PHASE:
+    case RESET_PHASE:
       return { ...TIMER_DEFAULT };
     default:
       return state;
