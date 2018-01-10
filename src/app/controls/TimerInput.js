@@ -38,7 +38,7 @@ class TimerInput extends React.Component {
       <div className="timer-input">
         <h3>{label}</h3>
         <div onClick={this.startEdit}>
-          <button className="btn" onClick={this.decrement}>
+          <button className="btn timer-btn" onClick={this.decrement}>
             -
           </button>
           {isEditing ? (
@@ -53,7 +53,7 @@ class TimerInput extends React.Component {
           ) : (
             <span>{value}</span>
           )}
-          <button className="btn" onClick={this.increment}>
+          <button className="btn timer-btn" onClick={this.increment}>
             +
           </button>
         </div>

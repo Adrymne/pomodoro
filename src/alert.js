@@ -1,5 +1,10 @@
 import store from 'store';
-import { isWorkPhase } from 'store/reducer';
+import {
+  isWorkPhase,
+  getDuration,
+  getStartTime,
+  isInProgress
+} from 'store/reducer';
 
 // See: https://github.com/reactjs/redux/issues/303#issuecomment-125184409
 const observeStore = (predicate, action) => {
@@ -15,8 +20,14 @@ const observeStore = (predicate, action) => {
   store.subscribe(onChange);
 };
 
+// Attempt to prevent notify when the user skips
+const wasCloseToEnd = state => {
+  const startTime = getStartTime(state);
+  const elapsed = startTime ? Date.now() - startTime : 0;
+  return isInProgress(state) && getDuration(state) - elapsed < 500;
+};
 const didPhaseEnd = (prevState, nextState) =>
-  isWorkPhase(prevState) !== isWorkPhase(nextState);
+  wasCloseToEnd(prevState) && !isInProgress(nextState);
 
 const createMessage = state =>
   isWorkPhase(state) ? 'Break over, time to work!' : 'Take a break!';

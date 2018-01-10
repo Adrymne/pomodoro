@@ -1,10 +1,15 @@
 import { combineReducers } from 'redux';
-import { START, STOP, UPDATE_PHASE_LENGTH, NEXT_PHASE } from 'store/actions';
-
-// actions: START, STOP, RESET, SKIP
+import {
+  START,
+  STOP,
+  UPDATE_PHASE_LENGTH,
+  NEXT_PHASE,
+  RESET_PHASE
+} from 'store/actions';
 
 const DEFAULT_LENGTH = {
-  work: 25 * 60 * 1000,
+  work: 5000,
+  // work: 25 * 60 * 1000,
   rest: 5 * 60 * 1000
 };
 
@@ -30,6 +35,7 @@ export const timer = (state = TIMER_DEFAULT, action) => {
         progress: action.progress
       };
     case NEXT_PHASE:
+    case RESET_PHASE:
       return { ...TIMER_DEFAULT };
     default:
       return state;
@@ -59,6 +65,6 @@ export const getActivePhaseLength = state =>
 export const isRunning = state => !!state.timer.startTime;
 export const getStartTime = state => state.timer.startTime;
 export const getProgress = state => state.timer.progress;
-const isInProgress = state => !!state.timer.duration;
+export const isInProgress = state => !!state.timer.duration;
 export const getDuration = state =>
   isInProgress(state) ? state.timer.duration : getActivePhaseLength(state);

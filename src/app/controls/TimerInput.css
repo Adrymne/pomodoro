@@ -17,21 +17,8 @@
 
   cursor: pointer;
 }
-
-button.btn {
-  background-color: white;
-  border: 1px solid lightgray;
-  cursor: pointer;
-  transition-duration: 0.3s;
-
+.timer-btn {
   font-size: 1em;
   height: 100%;
   width: 1.5em;
-}
-button.btn:hover {
-  background-color: #e7e7e7;
-}
-button.btn:focus,
-button.btn:active {
-  outline: 0;
 }
