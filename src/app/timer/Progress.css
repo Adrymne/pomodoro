@@ -1,0 +1,7 @@
+#timer-progress {
+  border-radius: 50%;
+  overflow: hidden;
+}
+#timer-progress:hover {
+  background-color: lightgray;
+}

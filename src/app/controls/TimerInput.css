@@ -1,0 +1,24 @@
+.timer-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 0 0.5em;
+}
+
+.timer-input div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 2em;
+  width: 6em;
+  height: 1.5em;
+
+  cursor: pointer;
+}
+.timer-btn {
+  font-size: 1em;
+  height: 100%;
+  width: 1.5em;
+}
