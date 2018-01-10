@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import * as actions from 'store/actions';
 import * as selectors from 'store/reducer';
 import TimerInput from './controls/TimerInput';
+import Skip from './controls/Skip';
 import './Controls.css';
 
 const Controls = ({ work, rest, updateWork, updateRest }) => (
   <div id="controls">
     <TimerInput label="Break Length" value={rest} onChange={updateRest} />
+    <Skip />
     <TimerInput label="Work Length" value={work} onChange={updateWork} />
   </div>
 );

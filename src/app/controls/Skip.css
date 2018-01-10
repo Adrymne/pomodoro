@@ -1,0 +1,11 @@
+.skip-input {
+  display: flex;
+  align-content: flex-end;
+
+  align-self: flex-end;
+}
+
+.skip-btn {
+  font-size: 2em;
+  margin: 0 0.5em;
+}
