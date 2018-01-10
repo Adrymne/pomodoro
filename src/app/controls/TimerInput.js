@@ -1,5 +1,6 @@
 import React from 'react';
 import './TimerInput.css';
+import MinuteInput from './timerInput/MinuteInput';
 
 class TimerInput extends React.Component {
   constructor(props) {
@@ -15,14 +16,24 @@ class TimerInput extends React.Component {
   };
   increment = e => {
     e.stopPropagation();
+    const { value, onChange } = this.props;
+    onChange(value + 1);
   };
   decrement = e => {
     e.stopPropagation();
+    const { value, onChange } = this.props;
+    if (value === 1) {
+      return;
+    }
+    onChange(value - 1);
+  };
+  endEdit = () => {
+    this.setState({ isEditing: false });
   };
 
   render() {
     const { isEditing } = this.state;
-    const { label, value } = this.props;
+    const { label, value, onChange } = this.props;
     return (
       <div className="timer-input">
         <h3>{label}</h3>
@@ -30,7 +41,18 @@ class TimerInput extends React.Component {
           <button className="btn" onClick={this.decrement}>
             -
           </button>
-          {isEditing ? <input value={value} /> : <span>{value}</span>}
+          {isEditing ? (
+            <MinuteInput
+              value={value}
+              onSubmit={value => {
+                this.endEdit();
+                onChange(value);
+              }}
+              onBlur={this.endEdit}
+            />
+          ) : (
+            <span>{value}</span>
+          )}
           <button className="btn" onClick={this.increment}>
             +
           </button>
